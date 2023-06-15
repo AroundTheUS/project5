@@ -1,18 +1,44 @@
 .modal {
-  display: none;
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.5);
   top: 0px;
   left: 0px;
+
   width: 100%;
   height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  visibility: none; /* invisible */
+  opacity: 0; /* opacity has numeric value, so we can animate it */
+  pointer-events: none; /* can't interact with closed popup */
+  transition: visibility 0s 0.5s, opacity 0.5s linear; /* animation settings */
+
+   display: flex;
+   justify-content: center;
+   align-items: flex-start;
+   padding-top: 195px;
+
+   /* 
+   .modal_opened should have only the styles related to opened modal state, 
+   and they are opacity, visibility, transition and pointer-events 
+   (none for closed popup and all for opened popup - it disables interactions with the popup while it's closed). 
+   display, justify-content, align-items and padding-top should be in .modal 
+   */
+
 }
 
 .modal_opened {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 195px;
+   visibility: visible; /* visible */
+   opacity: 1; /* opacity has numeric value, so we can animate it */
+   pointer-events: all; /* can interact with opened popup */
+   transition: visibility 0s, opacity 0.5s linear; /* animation settings */
+
+   /* 
+   Popups should open and close smoothly and animate visibility and opacity properties. 
+   Don't use display for changing popup visibility. 
+   Use pointer-events to disable interactions with the popup while it's closed.
+  .modal should have a delay of 0.5s (= opacity transition duration) for visibility transition 
+  (when we close a popup, visibility will be hidden after opacity transition) 
+  */
 }
 
 .modal__container {
@@ -29,11 +55,22 @@
   position: absolute;
   top: -45px;
   right: -45px;
+
+  transition: visibility 0s 0.5s, opacity 0.5s;
 }
 
 .modal__close:hover {
   cursor: pointer;
   opacity: 0.6;
+}
+
+.modal__form {
+  box-sizing: border-box;
+  padding: 36px;
+
+  background: #ffffff;
+  font-family: "Inter", sans-serif;
+  border-radius: 10px;
 }
 
 .modal__title {
@@ -48,18 +85,8 @@
   line-height: 29px;
 }
 
-.modal__form {
-  box-sizing: border-box;
-  padding: 36px;
-
-  background: #ffffff;
-  font-family: "Inter", sans-serif;
-  border-radius: 10px;
-}
-
-
 .modal__input {
-  min-width: 358px;
+  width: 100%;
   min-height: 35px;
   border-top: none;
   border-left: none;
@@ -74,7 +101,7 @@
 }
 
 .modal__button {
-  min-width: 117px;
+  width: 100%;
   min-height: 50px;
   background: #000;
   border-radius: 2px;
@@ -91,10 +118,30 @@
   opacity: 0.5;
 }
 
+.modal__preview {
+  position: absolute;
+  top: 90px;
+  margin: 0 auto;
+}
 
+.modal__preview-image {
+  max-width: 75vw;
+  max-height: 75vh;
+}
+
+.modal__preview-caption {
+  max-width: 330px;
+  margin: 0;
+
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 400;
+
+  color: #ffffff;
+}
 
 @media screen and (max-width: 520px) {
-
   .modal_opened {
     padding-top: 123px;
   }
@@ -107,11 +154,12 @@
   }
 
   .modal__close {
-    width: 26px;
-    height: 26px;
     position: absolute;
     top: -45px;
     right: 20px;
+
+    width: 26px;
+    height: 26px;
   }
 
   .modal__form {
@@ -135,6 +183,7 @@
     margin-top: 48px;
     padding: 0;
     font-size: 14px;
-  line-height: 16px;
+    line-height: 16px;
   }
+
 }
